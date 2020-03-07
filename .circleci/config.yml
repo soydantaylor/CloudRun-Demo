@@ -66,9 +66,6 @@ orbs:
             type: string
         docker:
           - image: <<parameters.runtime-image>>
-            auth:
-              username: _json_key
-              password: $GCLOUD_SERVICE_KEY
 workflows:
   build_and_test:
     jobs:
