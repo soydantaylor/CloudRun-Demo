@@ -1,0 +1,94 @@
+version: 2.1
+description: This is an inline job
+orbs:
+  dan-orb:
+    jobs:
+      build_and_push_job:
+        parameters:
+          semantic_version:
+            type: string
+          gcp_project:
+            type: string
+          gcp_region:
+            type: string
+            default: us-central1
+          image_name:
+            description: null
+            type: string
+          cloud_run_service_name:
+            type: string
+          build-time-image:
+            type: string
+        executor:
+          name: build_and_push_executor
+          runtime-image: <<parameters.build-time-image>>
+        steps:
+          - build_and_push_command:
+              image_name: <<parameters.image_name>>
+              semantic_version: <<parameters.semantic_version>>
+              gcp_project: <<parameters.gcp_project>>
+              gcp_region: <<parameters.gcp_region>>
+              cloud_run_service_name: <<parameters.cloud_run_service_name>>
+    commands:
+      build_and_push_command:
+        parameters:
+          image_name:
+            type: string
+          semantic_version:
+            type: string
+          gcp_region:
+            type: string
+          gcp_project:
+            type: string
+          cloud_run_service_name:
+            type: string
+        steps:
+          - checkout
+          - setup_remote_docker
+          - run:
+              command: |
+                SHA=$(echo $CIRCLE_SHA1 | tail -c 8)
+                IMAGE=<<parameters.image_name>>:<<parameters.semantic_version>>
+
+                docker build -t app .
+                docker tag app $IMAGE$CIRCLE_BUILD_NUM
+                docker tag app $IMAGE$CIRCLE_BUILD_NUM-$SHA
+
+                echo $GCLOUD_SERVICE_KEY > key.json
+                export GOOGLE_APPLICATION_CREDENTIALS=$(pwd -P)/key.json
+
+                gcloud auth activate-service-account --key-file key.json
+                gcloud --quiet config set project ${<<parameters.gcp_project>>}
+    executors:
+      build_and_push_executor:
+        parameters:
+          runtime-image:
+            type: string
+        docker:
+          - image: <<parameters.runtime-image>>
+            auth:
+              username: _json_key
+              password: $GCLOUD_SERVICE_KEY
+workflows:
+  build_and_test:
+    jobs:
+      - dan-orb/build_and_push_job:
+          name: push to prod
+          image_name: gcr.io/dan-tracker/timetracker
+          semantic_version: '1.0'
+          gcp_project: dan-tracker
+          cloud_run_service_name: timetracker
+          build-time-image: 'dantaylor/docker-terraform:master'
+          filters:
+            branches:
+              only: master
+      - dan-orb/build_and_push_job:
+          name: push to not prod
+          image_name: gcr.io/dan-tracker/timetracker
+          semantic_version: '1.0'
+          gcp_project: dan-tracker
+          cloud_run_service_name: timetrackerdev
+          build-time-image: 'dantaylor/docker-terraform:master'
+          filters:
+            branches:
+              ignore: master
