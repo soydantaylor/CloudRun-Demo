@@ -74,20 +74,20 @@ workflows:
     jobs:
       - dan-orb/build_and_push_job:
           name: push to prod
-          image_name: gcr.io/dan-tracker/timetracker
+          image_name: gcr.io/dan-gke-poc-230719/statusupdater
           semantic_version: '1.0'
-          gcp_project: dan-tracker
-          cloud_run_service_name: timetracker
+          gcp_project: dan-gke-poc-230719
+          cloud_run_service_name: statusupdater
           build-time-image: 'gcr.io/dan-gke-poc-230719/docker-terraform:latest'
           filters:
             branches:
               only: master
       - dan-orb/build_and_push_job:
           name: push to not prod
-          image_name: gcr.io/dan-tracker/timetracker
+          image_name: gcr.io/dan-gke-poc-230719/statusupdater
           semantic_version: '1.0'
           gcp_project: dan-tracker
-          cloud_run_service_name: timetrackerdev
+          cloud_run_service_name: statusupdaterdev
           build-time-image: 'gcr.io/dan-gke-poc-230719/docker-terraform:latest'
           filters:
             branches:
