@@ -66,6 +66,9 @@ orbs:
             type: string
         docker:
           - image: <<parameters.runtime-image>>
+            auth:
+              username: _json_key
+              password: $GCLOUD_SERVICE_KEY
 workflows:
   build_and_test:
     jobs:
@@ -75,7 +78,7 @@ workflows:
           semantic_version: '1.0'
           gcp_project: dan-tracker
           cloud_run_service_name: timetracker
-          build-time-image: 'dantaylor/docker-terraform:master'
+          build-time-image: 'gcr.io/dan-gke-poc-230719/docker-terraform:latest'
           filters:
             branches:
               only: master
@@ -85,7 +88,7 @@ workflows:
           semantic_version: '1.0'
           gcp_project: dan-tracker
           cloud_run_service_name: timetrackerdev
-          build-time-image: 'dantaylor/docker-terraform:master'
+          build-time-image: 'gcr.io/dan-gke-poc-230719/docker-terraform:latest'
           filters:
             branches:
               ignore: master
