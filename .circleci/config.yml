@@ -59,6 +59,9 @@ orbs:
 
                 gcloud auth activate-service-account --key-file key.json
                 gcloud --quiet config set project ${<<parameters.gcp_project>>}
+
+                gcloud docker -- push $IMAGE$CIRCLE_BUILD_NUM
+                gcloud docker -- push $IMAGE$CIRCLE_BUILD_NUM-$SHA
     executors:
       build_and_push_executor:
         parameters:
