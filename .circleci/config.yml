@@ -82,6 +82,8 @@ orbs:
               command: |
                 SHA=$(echo $CIRCLE_SHA1 | tail -c 8)
                 IMAGE=<<parameters.image_name>>:<<parameters.semantic_version>>
+
+                sed -i '' 's/<<IMAGE>>/${IMAGE}/g cloud-run.tf'
                 echo $GCLOUD_SERVICE_KEY > key.json
                 export GOOGLE_APPLICATION_CREDENTIALS=$(pwd -P)/key.json
                 printf "${SECRETS_AUTO_TFVARS}\n" > secrets.auto.tfvars.json

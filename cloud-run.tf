@@ -5,7 +5,7 @@ resource "google_cloud_run_service" "statusupdater" {
   template {
     spec {
       containers {
-        image = "gcr.io/${var.project-name}/statusupdater"
+        image = "<<IMAGE>>"
         env {
           name = "SOURCE"
           value = "remote"
