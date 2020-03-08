@@ -20,7 +20,7 @@ orbs:
           build-time-image:
             type: string
         executor:
-          name: "build_and_push_executor"
+          name: build_and_push_executor
           build-time-image: <<parameters.build-time-image>>
         steps:
           - build_and_push_command:
@@ -46,6 +46,7 @@ orbs:
           - checkout
           - setup_remote_docker
           - run:
+              name: build and push
               command: |
                 SHA=$(echo $CIRCLE_SHA1 | tail -c 8)
                 IMAGE=<<parameters.image_name>>:<<parameters.semantic_version>>
@@ -77,6 +78,7 @@ orbs:
         steps:
           - checkout
           - run:
+              name: terraform apply
               command: |
                 SHA=$(echo $CIRCLE_SHA1 | tail -c 8)
                 IMAGE=<<parameters.image_name>>:<<parameters.semantic_version>>
