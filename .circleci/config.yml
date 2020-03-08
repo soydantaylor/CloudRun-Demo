@@ -87,6 +87,7 @@ orbs:
                 printf "${SECRETS_AUTO_TFVARS}\n" > secrets.auto.tfvars.json
                 terraform init
                 terraform plan
+                terraform apply -auto-approve
       
     executors:
       build_and_push_executor:
