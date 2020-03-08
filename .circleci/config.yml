@@ -84,6 +84,7 @@ orbs:
                 IMAGE=<<parameters.image_name>>:<<parameters.semantic_version>>
                 echo $GCLOUD_SERVICE_KEY > key.json
                 export GOOGLE_APPLICATION_CREDENTIALS=$(pwd -P)/key.json
+                echo $SECRETS_AUTO_TFVARS > secrets.auto.tfvars
                 terraform init
                 terraform plan
       
