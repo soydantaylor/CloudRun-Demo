@@ -27,9 +27,28 @@ orbs:
               image_name: <<parameters.image_name>>
               semantic_version: <<parameters.semantic_version>>
               gcp_project: <<parameters.gcp_project>>
+          - terraform_apply_command:
+              image_name: <<parameters.image.name>>
+              semantic_version: <<parameters.semantic_version>>
+              gcp_project: <<parameters.gcp_project>>
               gcp_region: <<parameters.gcp_region>>
               cloud_run_service_name: <<parameters.cloud_run_service_name>>
     commands:
+      terraform_apply_command:
+        parameters:
+          image_name:
+            type: string
+          cloud_run_service_name:
+            type: string
+        steps:
+          - checkout
+          - run:
+              command: |
+                SHA=$(echo $CIRCLE_SHA1 | tail -c 8)
+                IMAGE=<<parameters.image_name>>:<<parameters.semantic_version>>
+                echo $GCLOUD_SERVICE_KEY > key.json
+                export GOOGLE_APPLICATION_CREDENTIALS=$(pwd -P)/key.json
+                terraform version
       build_and_push_command:
         parameters:
           image_name:
@@ -39,8 +58,6 @@ orbs:
           gcp_region:
             type: string
           gcp_project:
-            type: string
-          cloud_run_service_name:
             type: string
         steps:
           - checkout
@@ -95,3 +112,7 @@ workflows:
           filters:
             branches:
               ignore: master
+      - dan-orb/terraform_apply_job:
+          name: terraform apply to not prod
+          image_name: gcr.io/dan-gke-poc-230719/statusupdater
+          build-time-image: 'gcr.io/dan-gke-poc-230719/docker-terraform:latest'
