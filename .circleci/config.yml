@@ -84,7 +84,8 @@ orbs:
                 IMAGE=<<parameters.image_name>>:<<parameters.semantic_version>>
                 echo $GCLOUD_SERVICE_KEY > key.json
                 export GOOGLE_APPLICATION_CREDENTIALS=$(pwd -P)/key.json
-                terraform version
+                terraform init
+                terraform plan
       
     executors:
       build_and_push_executor:
