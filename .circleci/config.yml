@@ -83,7 +83,7 @@ orbs:
                 SHA=$(echo $CIRCLE_SHA1 | tail -c 8)
                 IMAGE=<<parameters.image_name>>:<<parameters.semantic_version>>
 
-                sed -i 's/jjIMAGEjj/${IMAGE}/g' ./cloud-run.tf
+                sed -i 's~jjIMAGEjj~${IMAGE}~g' ./cloud-run.tf
                 echo $GCLOUD_SERVICE_KEY > key.json
                 export GOOGLE_APPLICATION_CREDENTIALS=$(pwd -P)/key.json
                 printf "${SECRETS_AUTO_TFVARS}\n" > secrets.auto.tfvars.json
@@ -107,7 +107,7 @@ workflows:
       - dan-orb/build_and_push_job:
           name: push to prod
           image_name: gcr.io/dan-gke-poc-230719/statusupdater
-          semantic_version: '1.0'
+          semantic_version: '0.0'
           gcp_project: dan-gke-poc-230719
           cloud_run_service_name: statusupdater
           build-time-image: 'gcr.io/dan-gke-poc-230719/docker-terraform:latest'
