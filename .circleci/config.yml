@@ -112,7 +112,3 @@ workflows:
           filters:
             branches:
               ignore: master
-      - dan-orb/terraform_apply_job:
-          name: terraform apply to not prod
-          image_name: gcr.io/dan-gke-poc-230719/statusupdater
-          build-time-image: 'gcr.io/dan-gke-poc-230719/docker-terraform:latest'
