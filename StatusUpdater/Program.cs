@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -16,11 +18,18 @@ namespace StatusUpdater
             CreateHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        public static IWebHostBuilder CreateHostBuilder(string[] args)
+        {
+            //dynamic port variable used in CloudRun
+            var port = Environment.GetEnvironmentVariable("PORT");
+            
+            //debugging statement in case the port didn't get passed correctly
+            Console.WriteLine($"env PORT is {port ?? ("not found")}");
+
+            return WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .UseKestrel()
+                .ConfigureKestrel((context, options) => { options.Listen(IPAddress.IPv6Any, Convert.ToInt32(port ?? "8080")); });
+        }
     }
 }
