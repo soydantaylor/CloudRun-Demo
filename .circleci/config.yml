@@ -27,6 +27,8 @@ orbs:
               image_name: <<parameters.image_name>>
               semantic_version: <<parameters.semantic_version>>
               gcp_project: <<parameters.gcp_project>>
+              gcp_region: <<parameters.gcp_region>>
+              cloud_run_service_name: <<parameters.cloud_run_service_name>>
     commands:
       build_and_push_command:
         parameters:
