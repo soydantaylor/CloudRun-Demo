@@ -26,7 +26,7 @@ namespace StatusUpdater.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok("Minor version 0.1");
+            return Ok("Minor version 0.2; with a cool new feature");
         }
     }
 }
