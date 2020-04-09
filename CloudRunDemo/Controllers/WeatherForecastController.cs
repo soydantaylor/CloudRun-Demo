@@ -26,7 +26,7 @@ namespace CloudRunDemo.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok("this semantic minor version 2");
+            return Ok("this semantic minor version 2.1");
         }
     }
 }
