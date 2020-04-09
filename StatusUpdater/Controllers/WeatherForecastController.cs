@@ -26,6 +26,11 @@ namespace StatusUpdater.Controllers
         [HttpGet]
         public IActionResult Get()
         {
+            if (Request.Headers.ContainsKey("warmup"))
+            {
+                return NoContent();
+            }
+
             return Ok("Minor version 0.2; with a cool new feature");
         }
     }

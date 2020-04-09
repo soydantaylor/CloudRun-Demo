@@ -108,7 +108,7 @@ workflows:
             branches:
               only: development
       - dan-orb/build_and_push_job:
-          name: push to not prod
+          name: push cool new feature
           image_name: gcr.io/dan-gke-poc-230719/statusupdater
           semantic_version: '0.2'
           gcp_project: dan-gke-poc-230719
