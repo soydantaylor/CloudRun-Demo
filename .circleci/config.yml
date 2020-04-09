@@ -63,9 +63,10 @@ orbs:
 
                 gcloud docker -- push $IMAGE$CIRCLE_BUILD_NUM
                 gcloud docker -- push $IMAGE$CIRCLE_BUILD_NUM-$SHA
-
+                
+                echo $IMAGE$CIRCLE_BUILD_NUM
+                
                 gcloud beta run deploy <<parameters.cloud_run_service_name>> \
-                               
                 --project <<parameters.gcp_project>> \
                 --image $IMAGE$CIRCLE_BUILD_NUM \
                 --region <<parameters.gcp_region>> \
