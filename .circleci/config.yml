@@ -110,7 +110,7 @@ workflows:
       - dan-orb/build_and_push_job:
           name: push cool new feature
           image_name: gcr.io/dan-gke-poc-230719/cloudrundemo
-          semantic_version: '0.2'
+          semantic_version: '0.0'
           gcp_project: dan-gke-poc-230719
           cloud_run_service_name: cloudrundemocoolnewfeature
           build-time-image: 'gcr.io/dan-gke-poc-230719/docker-terraform:latest'
