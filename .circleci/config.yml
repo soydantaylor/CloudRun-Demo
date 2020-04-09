@@ -101,7 +101,7 @@ workflows:
           name: push to not prod
           image_name: gcr.io/dan-gke-poc-230719/statusupdater
           semantic_version: '0.0'
-          gcp_project: dan-tracker
+          gcp_project: dan-gke-poc-230719
           cloud_run_service_name: statusupdaterdev
           build-time-image: 'gcr.io/dan-gke-poc-230719/docker-terraform:latest'
           filters:
