@@ -11,10 +11,10 @@ RUN dotnet publish CloudRunDemo.sln -c Release -o /publish
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.0 as runtime
 WORKDIR /app
-#USER root
+USER root
 
-#RUN useradd -ms /bin/bash dotnetuser \
-#&& chown dotnetuser /app 
-#USER dotnetuser
+RUN useradd -ms /bin/bash dotnetuser \
+&& chown dotnetuser /app 
+USER dotnetuser
 COPY --from=build /publish .
 CMD ["dotnet", "CloudRunDemo.dll"]
