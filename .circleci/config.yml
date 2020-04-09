@@ -38,6 +38,10 @@ orbs:
             type: string
           gcp_project:
             type: string
+          gcp_region:
+            type: string
+          cloud_run_service_name:
+            type: string
         steps:
           - checkout
           - setup_remote_docker
