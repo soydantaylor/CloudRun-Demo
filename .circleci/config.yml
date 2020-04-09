@@ -112,7 +112,7 @@ workflows:
           image_name: gcr.io/dan-gke-poc-230719/cloudrundemo
           semantic_version: '0.2'
           gcp_project: dan-gke-poc-230719
-          cloud_run_service_name: cloudrundemorcoolnewfeature
+          cloud_run_service_name: cloudrundemocoolnewfeature
           build-time-image: 'gcr.io/dan-gke-poc-230719/docker-terraform:latest'
           filters:
             branches:
