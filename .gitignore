@@ -350,3 +350,5 @@ MigrationBackup/
 secrets.auto.tfvars
 key.json
 .terraform*
+.idea*
+.vscode

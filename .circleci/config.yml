@@ -27,12 +27,6 @@ orbs:
               image_name: <<parameters.image_name>>
               semantic_version: <<parameters.semantic_version>>
               gcp_project: <<parameters.gcp_project>>
-          - terraform_apply_command:
-              image_name: <<parameters.image_name>>
-              semantic_version: <<parameters.semantic_version>>
-              gcp_project: <<parameters.gcp_project>>
-              cloud_run_service_name: <<parameters.cloud_run_service_name>>
-              gcp_region: <<parameters.gcp_region>>
     commands:
       build_and_push_command:
         parameters:
@@ -63,34 +57,15 @@ orbs:
 
                 gcloud docker -- push $IMAGE$CIRCLE_BUILD_NUM
                 gcloud docker -- push $IMAGE$CIRCLE_BUILD_NUM-$SHA
-      terraform_apply_command:
-        parameters:
-          image_name:
-            type: string
-          semantic_version:
-            type: string
-          gcp_project:
-            type: string
-          gcp_region:
-            type: string
-          cloud_run_service_name:
-            type: string
-        steps:
-          - checkout
-          - run:
-              name: terraform apply
-              command: |
-                SHA=$(echo $CIRCLE_SHA1 | tail -c 8)
-                IMAGE=<<parameters.image_name>>:<<parameters.semantic_version>>
 
-                sed -i "s~jjIMAGEjj~$IMAGE$CIRCLE_BUILD_NUM~g" cloud-run.tf ./cloud-run.tf
-                echo $GCLOUD_SERVICE_KEY > key.json
-                export GOOGLE_APPLICATION_CREDENTIALS=$(pwd -P)/key.json
-                printf "${SECRETS_AUTO_TFVARS}\n" > secrets.auto.tfvars.json
-                terraform init
-                terraform plan
-                terraform apply -auto-approve
-      
+                gcloud beta run deploy <<parameters.cloud_run_service_name>> \
+                               
+                --project <<parameters.gcp_project>> \
+                --image $IMAGE$CIRCLE_BUILD_NUM \
+                --region <<parameters.gcp_region>> \
+                --platform managed
+  
+                rm key.json
     executors:
       build_and_push_executor:
         parameters:
