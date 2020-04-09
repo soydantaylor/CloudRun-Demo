@@ -85,24 +85,24 @@ orbs:
               username: _json_key
               password: $GCLOUD_SERVICE_KEY
 workflows:
-  build_and_test:
+  build_and_push:
     jobs:
       - dan-orb/build_and_push_job:
           name: push to prod
-          image_name: gcr.io/dan-gke-poc-230719/statusupdater
+          image_name: gcr.io/dan-gke-poc-230719/cloudrundemo
           semantic_version: '0.0'
           gcp_project: dan-gke-poc-230719
-          cloud_run_service_name: statusupdater
+          cloud_run_service_name: cloudrundemo
           build-time-image: 'gcr.io/dan-gke-poc-230719/docker-terraform:latest'
           filters:
             branches:
               only: master
       - dan-orb/build_and_push_job:
           name: push to not prod
-          image_name: gcr.io/dan-gke-poc-230719/statusupdater
-          semantic_version: '0.1'
+          image_name: gcr.io/dan-gke-poc-230719/cloudrundemo
+          semantic_version: '0.0'
           gcp_project: dan-gke-poc-230719
-          cloud_run_service_name: statusupdaterdev
+          cloud_run_service_name: cloudrundemo-develop
           build-time-image: 'gcr.io/dan-gke-poc-230719/docker-terraform:latest'
           filters:
             branches:
