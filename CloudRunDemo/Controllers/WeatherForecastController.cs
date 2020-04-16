@@ -26,6 +26,7 @@ namespace CloudRunDemo.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
+<<<<<<< Updated upstream
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
@@ -34,6 +35,14 @@ namespace CloudRunDemo.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+=======
+            if (Request.Headers.ContainsKey("warm"))
+            {
+                return NoContent();
+            }
+
+            return Ok("this semantic minor version 2.1");
+>>>>>>> Stashed changes
         }
     }
 }
